@@ -979,12 +979,12 @@
                         return a.timestamp - b.timestamp;
                     });
                     if ( products.length < expected_products_num ) return;
-                    $( '.products_wrapper' ).innerHTML = `<div class="product"><input placeholder="product name"><input placeholder="image url"><textarea placeholder="description" class="desc"></textarea><select placeholder="shipping zone"><option>--- Shipping zone ---</option><option>Free (digital)</option><option>Worldwide</option><option>Europe</option><option>Australia</option><option>Austria</option><option>Belgium</option><option>Brazil</option><option>Canada</option><option>Denmark</option><option>Finland</option><option>France</option><option>Germany</option><option>Greece</option><option>Hong Kong</option><option>Hungary</option><option>Ireland</option><option>Indonesia</option><option>Israel</option><option>Italy</option><option>Japan</option><option>Kazakhstan</option><option>Korea</option><option>Luxembourg</option><option>Malaysia</option><option>Mexico</option><option>Netherlands</option><option>New Zealand</option><option>Norway</option><option>Poland</option><option>Portugal</option><option>Russia</option><option>Saudi Arabia</option><option>Singapore</option><option>Spain</option><option>Sweden</option><option>Switzerland</option><option>Thailand</option><option>Turkey</option><option>Ukraine</option><option>United Kingdom</option><option>United States</option><option>Vietnam</option><option>China</option></select><input placeholder="usd price (e.g. 5.99)" class="price" type="number" step="0.01" min="0"><div style="margin-bottom: 1rem;"><input type="checkbox" style="width: 1rem;vertical-align: middle;margin-bottom: auto;" id="no_price_0"><label for="no_price_0" style="display: inline;vertical-align: middle;">Let users set the price</label></div><button class="preview">Product preview</button><button class="plus_and_minus">Add another product</button></div>`;
+                    $( '.products_wrapper' ).innerHTML = `<div class="product"><input placeholder="product name"><input placeholder="image url"><textarea placeholder="description" class="desc"></textarea><select placeholder="shipping zone"><option>--- Shipping zone ---</option><option>Free (digital)</option><option>Worldwide</option><option>Europe</option><option>Australia</option><option>Austria</option><option>Belgium</option><option>Brazil</option><option>Canada</option><option>Denmark</option><option>Finland</option><option>France</option><option>Germany</option><option>Greece</option><option>Hong Kong</option><option>Hungary</option><option>Ireland</option><option>Indonesia</option><option>Israel</option><option>Italy</option><option>Japan</option><option>Kazakhstan</option><option>Korea</option><option>Luxembourg</option><option>Malaysia</option><option>Mexico</option><option>Netherlands</option><option>New Zealand</option><option>Norway</option><option>Poland</option><option>Portugal</option><option>Russia</option><option>Saudi Arabia</option><option>Singapore</option><option>Spain</option><option>Sweden</option><option>Switzerland</option><option>Thailand</option><option>Turkey</option><option>Ukraine</option><option>United Kingdom</option><option>United States</option><option>Vietnam</option><option>China</option></select><input placeholder="sats" class="price" type="number" step="1" min="0"><div style="margin-bottom: 1rem;"><input type="checkbox" style="width: 1rem;vertical-align: middle;margin-bottom: auto;" id="no_price_0"><label for="no_price_0" style="display: inline;vertical-align: middle;">Let users set the price</label></div><button class="preview">Product preview</button><button class="plus_and_minus">Add another product</button></div>`;
                     $( '.plus_and_minus' ).onclick = () => {
                         var product = document.createElement( "div" );
                         product.className = "product";
                         var num = Math.floor( Math.random() * 10000000 );
-                        product.innerHTML = `<input placeholder="product name"><input placeholder="image url"><textarea placeholder="description" class="desc"></textarea><select placeholder="shipping zone"><option>--- Shipping zone ---</option><option>Free (digital)</option><option>Worldwide</option><option>Europe</option><option>Australia</option><option>Austria</option><option>Belgium</option><option>Brazil</option><option>Canada</option><option>Denmark</option><option>Finland</option><option>France</option><option>Germany</option><option>Greece</option><option>Hong Kong</option><option>Hungary</option><option>Ireland</option><option>Indonesia</option><option>Israel</option><option>Italy</option><option>Japan</option><option>Kazakhstan</option><option>Korea</option><option>Luxembourg</option><option>Malaysia</option><option>Mexico</option><option>Netherlands</option><option>New Zealand</option><option>Norway</option><option>Poland</option><option>Portugal</option><option>Russia</option><option>Saudi Arabia</option><option>Singapore</option><option>Spain</option><option>Sweden</option><option>Switzerland</option><option>Thailand</option><option>Turkey</option><option>Ukraine</option><option>United Kingdom</option><option>United States</option><option>Vietnam</option><option>China</option></select><input placeholder="usd price (e.g. 5.99)" class="price" type="number" step="0.01" min="0"><div style="margin-bottom: 1rem;"><input type="checkbox" style="width: 1rem;vertical-align: middle;margin-bottom: auto;" id="no_price_${num}"><label for="no_price_${num}" style="display: inline;vertical-align: middle;">Let users set the price</label></div>`;
+                        product.innerHTML = `<input placeholder="product name"><input placeholder="image url"><textarea placeholder="description" class="desc"></textarea><select placeholder="shipping zone"><option>--- Shipping zone ---</option><option>Free (digital)</option><option>Worldwide</option><option>Europe</option><option>Australia</option><option>Austria</option><option>Belgium</option><option>Brazil</option><option>Canada</option><option>Denmark</option><option>Finland</option><option>France</option><option>Germany</option><option>Greece</option><option>Hong Kong</option><option>Hungary</option><option>Ireland</option><option>Indonesia</option><option>Israel</option><option>Italy</option><option>Japan</option><option>Kazakhstan</option><option>Korea</option><option>Luxembourg</option><option>Malaysia</option><option>Mexico</option><option>Netherlands</option><option>New Zealand</option><option>Norway</option><option>Poland</option><option>Portugal</option><option>Russia</option><option>Saudi Arabia</option><option>Singapore</option><option>Spain</option><option>Sweden</option><option>Switzerland</option><option>Thailand</option><option>Turkey</option><option>Ukraine</option><option>United Kingdom</option><option>United States</option><option>Vietnam</option><option>China</option></select><input placeholder="sats" class="price" type="number" step="1" min="0"><div style="margin-bottom: 1rem;"><input type="checkbox" style="width: 1rem;vertical-align: middle;margin-bottom: auto;" id="no_price_${num}"><label for="no_price_${num}" style="display: inline;vertical-align: middle;">Let users set the price</label></div>`;
                         product.getElementsByTagName( "label" )[ 0 ].previousElementSibling.onclick = () => {
                             var elem = product.getElementsByTagName( "label" )[ 0 ].previousElementSibling;
                             if ( elem.checked ) {
@@ -1056,7 +1056,7 @@
                             if ( product.content.price == "custom" ) {
                                 $$( '.product' )[ index ].children[ 5 ].children[ 0 ].click();
                             } else {
-                                $$( '.product' )[ index ].children[ 4 ].value = ( product.content.price / 100 ).toFixed( 2 );
+                                $$( '.product' )[ index ].children[ 4 ].value = product.content.price;
                             }
                             if ( i == internal_products.length - 1 ) return; else continue;
                         }
@@ -1078,18 +1078,18 @@
                         if ( price == "custom" ) {
                             $$( '.store_product .product_price' )[ existing_num ].innerHTML = `Set an amount<div>$<input type="number" step="0.01" min="0" style="width: 90%;"></div>`;
                         } else {
-                            $$( '.store_product .product_price' )[ existing_num ].innerText = "$" + price.toFixed( 2 );
+                            $$( '.store_product .product_price' )[ existing_num ].innerText = price + " sats";
                         }
                         $$( '.store_product .shipping_zone' )[ existing_num ].innerText = product.content.shipping_zone;
                         $$( '.add_to_cart' ).forEach( function( item ) {
                             item.onclick = (e) => {
                                 // console.log( content.price, e.target.parentElement.getElementsByClassName( "product_price" )[ 0 ].innerText.replace( "$", "" ), ( Number( e.target.parentElement.getElementsByClassName( "product_price" )[ 0 ].innerText.replace( "$", "" ) ) * 100 ) )
                                 $( '.minicart_item_count' ).innerText = Number( $( '.minicart_item_count' ).innerText ) + 1;
-                                price = internal_products[ Number( e.target.getAttribute( "data-num" ) ) ].content.price;
+                                //price = internal_products[ Number( e.target.getAttribute( "data-num" ) ) ].content.price;
                                 cart.push({
                                     id: e.target.parentElement.getAttribute( "data-id" ),
                                     item: e.target.parentElement.getElementsByClassName( "product_name" )[ 0 ].innerText,
-                                    price: price != "custom" ? ( Number( e.target.parentElement.getElementsByClassName( "product_price" )[ 0 ].innerText.replace( "$", "" ) ) * 100 ) : Number( e.target.parentElement.getElementsByClassName( "product_price" )[ 0 ].getElementsByTagName( "input" )[ 0 ].value ) * 100,
+                                    price: price,
                                     shipping_zone: e.target.parentElement.getElementsByClassName( "shipping_zone" )[ 0 ].innerText,
                                 });
                                 showToast( "added to cart" );
@@ -1422,7 +1422,7 @@
             </div>
             <div class="products_wrapper">
                 <div class="product">
-                    <input placeholder="product name"><input placeholder="image url"><textarea placeholder="description" class="desc"></textarea><select placeholder="shipping zone"><option>--- Shipping zone ---</option><option>Free (digital)</option><option>Worldwide</option><option>Europe</option><option>Australia</option><option>Austria</option><option>Belgium</option><option>Brazil</option><option>Canada</option><option>Denmark</option><option>Finland</option><option>France</option><option>Germany</option><option>Greece</option><option>Hong Kong</option><option>Hungary</option><option>Ireland</option><option>Indonesia</option><option>Israel</option><option>Italy</option><option>Japan</option><option>Kazakhstan</option><option>Korea</option><option>Luxembourg</option><option>Malaysia</option><option>Mexico</option><option>Netherlands</option><option>New Zealand</option><option>Norway</option><option>Poland</option><option>Portugal</option><option>Russia</option><option>Saudi Arabia</option><option>Singapore</option><option>Spain</option><option>Sweden</option><option>Switzerland</option><option>Thailand</option><option>Turkey</option><option>Ukraine</option><option>United Kingdom</option><option>United States</option><option>Vietnam</option><option>China</option></select><input placeholder="usd price (e.g. 5.99)" class="price" type="number" step="0.01" min="0"><div style="margin-bottom: 1rem;"><input type="checkbox" style="width: 1rem;vertical-align: middle;margin-bottom: auto;" id="no_price_0"><label for="no_price_0" style="display: inline;vertical-align: middle;">Let users set the price</label></div><button class="preview">Product preview</button><button class="plus_and_minus">Add another product</button>
+                    <input placeholder="product name"><input placeholder="image url"><textarea placeholder="description" class="desc"></textarea><select placeholder="shipping zone"><option>--- Shipping zone ---</option><option>Free (digital)</option><option>Worldwide</option><option>Europe</option><option>Australia</option><option>Austria</option><option>Belgium</option><option>Brazil</option><option>Canada</option><option>Denmark</option><option>Finland</option><option>France</option><option>Germany</option><option>Greece</option><option>Hong Kong</option><option>Hungary</option><option>Ireland</option><option>Indonesia</option><option>Israel</option><option>Italy</option><option>Japan</option><option>Kazakhstan</option><option>Korea</option><option>Luxembourg</option><option>Malaysia</option><option>Mexico</option><option>Netherlands</option><option>New Zealand</option><option>Norway</option><option>Poland</option><option>Portugal</option><option>Russia</option><option>Saudi Arabia</option><option>Singapore</option><option>Spain</option><option>Sweden</option><option>Switzerland</option><option>Thailand</option><option>Turkey</option><option>Ukraine</option><option>United Kingdom</option><option>United States</option><option>Vietnam</option><option>China</option></select><input placeholder="sats" class="price" type="number" step="1" min="0"><div style="margin-bottom: 1rem;"><input type="checkbox" style="width: 1rem;vertical-align: middle;margin-bottom: auto;" id="no_price_0"><label for="no_price_0" style="display: inline;vertical-align: middle;">Let users set the price</label></div><button class="preview">Product preview</button><button class="plus_and_minus">Add another product</button>
                 </div>
             </div>
         </div>
@@ -1564,6 +1564,8 @@
             $( '.preview_pane' ).innerHTML = html;
             $( '.preview_pane' ).style.display = "block";
         }
+
+        //Event handler for the "Submit" button
         $( '.store_maker' ).onclick = async () => {
             $( '.progress' ).style.display = "block";
             var i; for ( i=0; i<$$( 'select' ).length; i++ ) {
@@ -1587,7 +1589,7 @@
                     image: array[ 1 ],
                     description: array[ 2 ],
                     shipping_zone: array[ 3 ],
-                    price: !checked ? Number( array[ 4 ] * 100 ) : "custom"
+                    price: !checked ? Number(array[ 4 ]) : "custom"
                 }
                 var content = JSON.stringify( obj );
                 var event = {
@@ -1642,7 +1644,8 @@
             showModal( content, true );
             await getNote( "modal_cleared" );
             window.location.href = private;
-        }
+        }//End "Submit" event handler 
+
         var renderCart = () => {
             var total = 0;
             var items = ``;
@@ -1651,9 +1654,9 @@
             cart.forEach( function( item ) {
                 if ( item[ "shipping_zone" ] != "Free (digital)" ) requires_shipping = true; else requires_edelivery = true;
                 total = total + item[ "price" ];
-                items += `<div class="minicart" style="display: flex; justify-content: space-between; text-align: left;"><div>${item[ "item" ]}</div><div style="text-align: right;align-self: center;">$${( item[ "price" ] / 100 ).toFixed( 2 )} <span style="border: 1px solid black;border-radius: 50%;width: 1.5rem;height: 1.5rem;display: inline-block;text-align: center; cursor: pointer;" onclick="var child = this.parentElement.parentElement;var parent = child.parentNode;var index = Array.prototype.indexOf.call(parent.children, child);cart.splice( index, 1 );renderCart();$( '.minicart_item_count' ).innerText = Number( $( '.minicart_item_count' ).innerText ) - 1;">&times;</span></div></div>`;
+                items += `<div class="minicart" style="display: flex; justify-content: space-between; text-align: left;"><div>${item[ "item" ]}</div><div style="text-align: right;align-self: center;">${item[ "price" ]} sats<span style="border: 1px solid black;border-radius: 50%;width: 1.5rem;height: 1.5rem;display: inline-block;text-align: center; cursor: pointer;" onclick="var child = this.parentElement.parentElement;var parent = child.parentNode;var index = Array.prototype.indexOf.call(parent.children, child);cart.splice( index, 1 );renderCart();$( '.minicart_item_count' ).innerText = Number( $( '.minicart_item_count' ).innerText ) - 1;">&times;</span></div></div>`;
             });
-            var total_div = `<div class="minicart" style="display: flex; justify-content: space-between; text-align: left;"><div>Total</div><div>$${( total / 100 ).toFixed( 2 )} aka ${dollarsToSats( ( total / 100 ).toFixed( 2 ) )} sats</div></div>`;
+            var total_div = `<div class="minicart" style="display: flex; justify-content: space-between; text-align: left;"><div>Total</div><div>${total} sats</div></div>`;
             var edelivery_div = ``;
             if ( requires_edelivery ) edelivery_div = `<div>Enter instructions for how to deliver your digital good(s) (e.g. email address? telegram handle? Please leave detailed instructions about what you want us to do)</div><textarea class="edelivery_form" style="width: 100%; height: 5rem;"></textarea>`
             var shipping_div = ``;
@@ -1690,7 +1693,7 @@
                 $( '.blank_view' ).innerHTML = `
                     <div style="display: flex; align-items: center; cursor: pointer;" onclick="renderCart();"><div style="display: flex; align-items: center; font-weight: bold; font-size: 3rem; margin-right: 0.5rem;">⇦</div><div style="font-weight: bold; font-size: 1.5rem;">Back</div></div>
                     <h2>Checkout</h2>
-                    Please send <span class="sats_to_pay">${dollarsToSats( ( total / 100 ).toFixed( 2 ) )}</span> sats and wait for your auto-generated receipt (your shipment is not guaranteed til you have your receipt)
+                    Please send <span class="sats_to_pay">${total}</span> sats and wait for your auto-generated receipt (your shipment is not guaranteed til you have your receipt)
                     <br><br>
                     <div class="payment_box"></div>
                 `;
@@ -1951,10 +1954,10 @@
                     <div>
                         <div style="display: flex; align-items: center; cursor: pointer;" onclick="$( '.blank_view' ).style.display = 'none';$( '.products' ).style.display = 'block';$( '.store_maker' ).parentElement.style.display = 'block';"><div style="display: flex; align-items: center; font-weight: bold; font-size: 3rem; margin-right: 0.5rem;">⇦</div><div style="font-size: 1.5rem; font-weight: bold;">Back</div></div>
                         <div style="display: flex; flex-wrap: wrap; justify-content: space-between;"><div style="font-weight: bold;">Wallet</div><button class="connect_node">Connect your node</button></div><br>
-                        <div class="wallet" style="display: flex;justify-content: space-between;background-color: orange;padding: 0.5rem;align-items: center;"><div>Base layer balance: $<span class="usd_balance">0.00</span> (<span class="btc_balance">0</span>&nbsp;sats)</div><div><button class="withdraw">Withdraw</button></div></div><br>
+                        <div class="wallet" style="display: flex;justify-content: space-between;background-color: orange;padding: 0.5rem;align-items: center;"><div>Base layer balance: <span class="btc_balance">0</span>&nbsp;sats</div><div><button class="withdraw">Withdraw</button></div></div><br>
                 `;
                 if ( ln_domain && ln_readkey ) $( '.blank_view' ).innerHTML += `                
-                        <div class="ln_wallet" style="display: flex;justify-content: space-between;background-color: lightblue;padding: 0.5rem;align-items: center;"><div>Lightning balance: $<span class="usd_balance">0.00</span> (<span class="btc_balance">0</span>&nbsp;sats)</div><div><button class="withdraw">Manage</button></div></div><br>
+                        <div class="ln_wallet" style="display: flex;justify-content: space-between;background-color: lightblue;padding: 0.5rem;align-items: center;"><div>Lightning balance: <span class="btc_balance">0</span>&nbsp;sats</div><div><button class="withdraw">Manage</button></div></div><br>
                 `;
                 $( '.blank_view' ).innerHTML += `
                         <div class="visa_card" style="display: flex;justify-content: space-between;background-color: pink;padding: 0.5rem;align-items: center;"><div>Buy a visa gift card <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Visa.svg/320px-Visa.svg.png" style="height: 1rem; vertical-align: middle;"></div><div><button class="visa_info">More info</button></div></div><br>
@@ -2008,7 +2011,7 @@
                 if ( ln_domain && ln_readkey ) {
                     var ln_balance = await getLNBalance();
                     $$( '.btc_balance' )[ 1 ].innerText = ln_balance;
-                    $$( '.usd_balance' )[ 1 ].innerText = satsToDollars( ln_balance ).toFixed( 2 );
+                    //$$( '.usd_balance' )[ 1 ].innerText = satsToDollars( ln_balance ).toFixed( 2 );
                 }
                 sales.forEach( async function( sale, index ) {
                     if ( "whisper_key" in sale[ 0 ] ) {
@@ -2107,7 +2110,7 @@
                     if ( sale[ 3 ] ) paid_amount = ( total / 100 ).toFixed( 2 );
                     var delivery_info = (sale[ 0 ][ "shipping_info" ]) ? sale[ 0 ][ "shipping_info" ]:sale[ 0 ][ "edelivery_info" ];
                     var order = `
-                        <div class="minicart order" style="background-color: ${bgcolor};" data-order_id="${sale[ 2 ]}"><div class="order_box">Delivery info:<br><div class="delivery_info"></div></div><div class="payment_info" style="text-align: right;align-self: center;">They paid: $${paid_amount} <button class="order_details" onclick="if ( this.parentElement.parentElement.nextElementSibling.style.display != 'none' ) this.parentElement.parentElement.nextElementSibling.style.display = 'none'; else this.parentElement.parentElement.nextElementSibling.style.display = 'block';">details</button> <button class="click_when_shipped" onclick="if ( sales[ ${index} ][ 3 ] ) return;var conf = confirm( 'Are you sure you want to mark this order as shipped?' );if ( !conf ) return;this.parentElement.parentElement.style.backgroundColor = 'lightgreen';this.innerText = 'shipped';this.onclick = () => {return false};sales[ ${index} ][ 3 ] = 1;$( '.sales_count' ).innerText = Number( $( '.sales_count' ).innerText ) - 1;shipped_orders.push( sales[ ${index} ][ 2 ] );localStorage.shipped_orders = JSON.stringify( shipped_orders );labelAsShipped( this.parentElement.parentElement.getAttribute( 'data-order_id' ) );">${shipped_instructions}</button></div></div>
+                        <div class="minicart order" style="background-color: ${bgcolor};" data-order_id="${sale[ 2 ]}"><div class="order_box">Delivery info:<br><div class="delivery_info"></div></div><div class="payment_info" style="text-align: right;align-self: center;">They paid: ${total} sats<button class="order_details" onclick="if ( this.parentElement.parentElement.nextElementSibling.style.display != 'none' ) this.parentElement.parentElement.nextElementSibling.style.display = 'none'; else this.parentElement.parentElement.nextElementSibling.style.display = 'block';">details</button> <button class="click_when_shipped" onclick="if ( sales[ ${index} ][ 3 ] ) return;var conf = confirm( 'Are you sure you want to mark this order as shipped?' );if ( !conf ) return;this.parentElement.parentElement.style.backgroundColor = 'lightgreen';this.innerText = 'shipped';this.onclick = () => {return false};sales[ ${index} ][ 3 ] = 1;$( '.sales_count' ).innerText = Number( $( '.sales_count' ).innerText ) - 1;shipped_orders.push( sales[ ${index} ][ 2 ] );localStorage.shipped_orders = JSON.stringify( shipped_orders );labelAsShipped( this.parentElement.parentElement.getAttribute( 'data-order_id' ) );">${shipped_instructions}</button></div></div>
                     `;
                     if ( !txinfo[ 3 ] ) {
                         order += `
