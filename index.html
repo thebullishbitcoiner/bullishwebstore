@@ -1060,7 +1060,17 @@
                             }
                             if ( i == internal_products.length - 1 ) return; else continue;
                         }
-                        if ( product.content[ "price" ] != "custom" ) var price = product.content[ "price" ] / 100; else price = "custom";
+
+                        //If not letting the user set the price
+                        if ( product.content[ "price" ] != "custom" )
+                        {
+                            var price = product.content["price"];
+                        }
+                        else 
+                        {
+                            price = "custom";
+                        } 
+                        
                         var existing_num = $$( '.store_product' ).length;
                         var html = `
                             <div class="store_product" data-id="${product.id}" style="background-color: lightgrey; border: 1px solid black; border-radius: 1rem; width: 100%; max-width: 13rem; text-align: center; padding: 1rem; word-wrap: break-word; margin-bottom: 1rem;">
