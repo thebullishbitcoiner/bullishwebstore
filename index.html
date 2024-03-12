@@ -1000,8 +1000,8 @@
                         button.innerText = "Product preview";
                         button.onclick = (e) => {
                             var checked = e.target.parentElement.children[ 5 ].children[ 0 ].checked;
-                            var price = !checked ? Number( e.target.parentElement.children[ 4 ].value ):`Set an amount<div>$<input type="number" step="0.01" min="0" style="width: 90%;"></div>`;
-                            if ( typeof price == "number" ) price = "$" + price.toFixed( 2 );
+                            var price = !checked ? Number( e.target.parentElement.children[ 4 ].value ):`Set an amount<div>$<input type="number" step="1" min="1" style="width: 90%;"></div>`;
+                            if ( typeof price == "number" ) price = price + " sats";
                             var html = `
                                 <h2>Preview pane</h2>
                                 <div class="store_product" style="background-color: lightgrey; border: 1px solid black; border-radius: 1rem; width: 100%; max-width: 13rem; text-align: center; padding: 1rem; word-wrap: break-word;">
@@ -1027,14 +1027,14 @@
                             item.onchange = () => {
                                 item.onkeyup = ( e ) => {
                                     if ( e.key === "$" ) {
-                                        alert( "Error, please do not include a dollar sign. Just type 5.00 or similar." );
+                                        alert( "Error: Please do not include a dollar sign, we only do sats 'round these parts." );
                                         $$( '.price' )[ index ].blur();
                                         $$( '.price' )[ index ].value = "";
                                         return;
                                     }
                                 }
-                                $$( '.price' )[ index ].value = Number( $$( '.price' )[ index ].value ).toFixed(2);
-                                if ( $$( '.price' )[ index ].value == "0.00" || $$( '.price' )[ index ].value == "0" ) $$( '.price' )[ index ].value = "";
+                                //$$( '.price' )[ index ].value = Number( $$( '.price' )[ index ].value ).toFixed(2);
+                                //if ( $$( '.price' )[ index ].value == "0.00" || $$( '.price' )[ index ].value == "0" ) $$( '.price' )[ index ].value = "";
                             }
                         });
                     }
@@ -1086,7 +1086,7 @@
                         $$( '.store_product .product_image' )[ existing_num ].src = product.content.image;
                         $$( '.store_product .product_name' )[ existing_num ].innerText = product.content.product;
                         if ( price == "custom" ) {
-                            $$( '.store_product .product_price' )[ existing_num ].innerHTML = `Set an amount<div>$<input type="number" step="0.01" min="0" style="width: 90%;"></div>`;
+                            $$( '.store_product .product_price' )[ existing_num ].innerHTML = `Set an amount<div>$<input type="number" step="1" min="21" style="width: 90%;"></div>`;
                         } else {
                             $$( '.store_product .product_price' )[ existing_num ].innerText = price + " sats";
                         }
@@ -1129,7 +1129,7 @@
                                 $( '.viewed_product .product_name' ).innerText = c2.product;
                                 $( '.viewed_product .product_image' ).src = c2.image;
                                 if ( c2.price == "custom" ) {
-                                    $( '.viewed_product .product_price' ).innerHTML = `Set an amount<div>$<input type="number" step="0.01" min="0" style="width: 90%;"></div>`;
+                                    $( '.viewed_product .product_price' ).innerHTML = `Set an amount<div>$<input type="number" step="1" min="21" style="width: 90%;"></div>`;
                                 } else {
                                     $( '.viewed_product .product_price' ).innerText = c2.price + " sats";
                                 }
@@ -1432,7 +1432,7 @@
             </div>
             <div class="products_wrapper">
                 <div class="product">
-                    <input placeholder="product name"><input placeholder="image url"><textarea placeholder="description" class="desc"></textarea><select placeholder="shipping zone"><option>--- Shipping zone ---</option><option>Free (digital)</option><option>Worldwide</option><option>Europe</option><option>Australia</option><option>Austria</option><option>Belgium</option><option>Brazil</option><option>Canada</option><option>Denmark</option><option>Finland</option><option>France</option><option>Germany</option><option>Greece</option><option>Hong Kong</option><option>Hungary</option><option>Ireland</option><option>Indonesia</option><option>Israel</option><option>Italy</option><option>Japan</option><option>Kazakhstan</option><option>Korea</option><option>Luxembourg</option><option>Malaysia</option><option>Mexico</option><option>Netherlands</option><option>New Zealand</option><option>Norway</option><option>Poland</option><option>Portugal</option><option>Russia</option><option>Saudi Arabia</option><option>Singapore</option><option>Spain</option><option>Sweden</option><option>Switzerland</option><option>Thailand</option><option>Turkey</option><option>Ukraine</option><option>United Kingdom</option><option>United States</option><option>Vietnam</option><option>China</option></select><input placeholder="sats" class="price" type="number" step="1" min="0"><div style="margin-bottom: 1rem;"><input type="checkbox" style="width: 1rem;vertical-align: middle;margin-bottom: auto;" id="no_price_0"><label for="no_price_0" style="display: inline;vertical-align: middle;">Let users set the price</label></div><button class="preview">Product preview</button><button class="plus_and_minus">Add another product</button>
+                    <input placeholder="product name"><input placeholder="image url"><textarea placeholder="description" class="desc"></textarea><select placeholder="shipping zone"><option>--- Shipping zone ---</option><option>Free (digital)</option><option>Worldwide</option><option>Europe</option><option>Australia</option><option>Austria</option><option>Belgium</option><option>Brazil</option><option>Canada</option><option>Denmark</option><option>Finland</option><option>France</option><option>Germany</option><option>Greece</option><option>Hong Kong</option><option>Hungary</option><option>Ireland</option><option>Indonesia</option><option>Israel</option><option>Italy</option><option>Japan</option><option>Kazakhstan</option><option>Korea</option><option>Luxembourg</option><option>Malaysia</option><option>Mexico</option><option>Netherlands</option><option>New Zealand</option><option>Norway</option><option>Poland</option><option>Portugal</option><option>Russia</option><option>Saudi Arabia</option><option>Singapore</option><option>Spain</option><option>Sweden</option><option>Switzerland</option><option>Thailand</option><option>Turkey</option><option>Ukraine</option><option>United Kingdom</option><option>United States</option><option>Vietnam</option><option>China</option></select><input placeholder="sats" class="price" type="number" step="1" min="21"><div style="margin-bottom: 1rem;"><input type="checkbox" style="width: 1rem;vertical-align: middle;margin-bottom: auto;" id="no_price_0"><label for="no_price_0" style="display: inline;vertical-align: middle;">Let users set the price</label></div><button class="preview">Product preview</button><button class="plus_and_minus">Add another product</button>
                 </div>
             </div>
         </div>
@@ -1560,7 +1560,7 @@
         $( '.preview' ).onclick = (e) => {
             var checked = e.target.parentElement.children[ 5 ].children[ 0 ].checked;
             var price = !checked ? Number( e.target.parentElement.children[ 4 ].value ):`Set an amount<div>$<input style="width: 90%;"></div>`;
-            if ( typeof price == "number" ) price = "$" + price.toFixed( 2 );
+            //if ( typeof price == "number" ) price = "$" + price.toFixed( 2 );
             var html = `
                 <h2>Preview pane</h2>
                 <div class="store_product" style="background-color: lightgrey; border: 1px solid black; border-radius: 1rem; width: 100%; max-width: 13rem; text-align: center; padding: 1rem; word-wrap: break-word;">
@@ -2077,8 +2077,8 @@
                     }
                     var address_balance = txinfo[ 2 ];
                     // var address_balance = await getAddressBalance( whisper_address, mempoolNetwork );
-                    var balance_in_dollars = satsToDollars( address_balance ).toFixed( 2 );
-                    if ( balance_in_dollars == "0.00" && !sale[ 3 ] ) return;
+                    //var balance_in_dollars = satsToDollars( address_balance ).toFixed( 2 );
+                    //if ( balance_in_dollars == "0.00" && !sale[ 3 ] ) return;
                     if ( !txinfo[ 3 ] ) {
                         $$( '.btc_balance' )[ 0 ].innerText = Number( $$( '.btc_balance' )[ 0 ].innerText ) + address_balance;
                     } else {
@@ -2103,42 +2103,45 @@
                         var item_price = Number( item[ "price" ] );
                         var item_name = item[ "item" ];
                         var claimed_price = Number( item[ "price" ] );
+                        //Not sure what this is for
                         if ( "id" in item && $( `[data-id="${item[ "id" ]}"]` ) ) {
                             var the_item = $( `[data-id="${item[ "id" ]}"]` );
-                            item_price = Number( the_item.getElementsByClassName( "price" )[ 0 ].value ) * 100;
+                            item_price = Number( the_item.getElementsByClassName( "price" )[ 0 ].value );
                             item_name = the_item.getElementsByTagName( "input" )[ 0 ].value;
                         }
                         total = total + item_price;
                         items += `<div class="minicart" style="display: flex; justify-content: space-between; text-align: left;"><div class="product_name"></div><div class="product_price" style="text-align: right;align-self: center;"></div></div>`;
                         names_and_prices.push( [ item_name, item_price ] );
                     });
-                    var paid_amount = balance_in_dollars;
+                    //var paid_amount = balance_in_dollars;
                     //if the item is shipped, display the amount as paid even if the address is empty
                     //because the address probably *is* empty -- that just means the merchant withdrew
                     //the money
-                    if ( sale[ 3 ] ) paid_amount = ( total / 100 ).toFixed( 2 );
+                    //if ( sale[ 3 ] ) paid_amount = ( total / 100 ).toFixed( 2 );
+                    paid_amount = total;
                     var delivery_info = (sale[ 0 ][ "shipping_info" ]) ? sale[ 0 ][ "shipping_info" ]:sale[ 0 ][ "edelivery_info" ];
                     var order = `
                         <div class="minicart order" style="background-color: ${bgcolor};" data-order_id="${sale[ 2 ]}"><div class="order_box">Delivery info:<br><div class="delivery_info"></div></div><div class="payment_info" style="text-align: right;align-self: center;">They paid: ${total} sats<button class="order_details" onclick="if ( this.parentElement.parentElement.nextElementSibling.style.display != 'none' ) this.parentElement.parentElement.nextElementSibling.style.display = 'none'; else this.parentElement.parentElement.nextElementSibling.style.display = 'block';">details</button> <button class="click_when_shipped" onclick="if ( sales[ ${index} ][ 3 ] ) return;var conf = confirm( 'Are you sure you want to mark this order as shipped?' );if ( !conf ) return;this.parentElement.parentElement.style.backgroundColor = 'lightgreen';this.innerText = 'shipped';this.onclick = () => {return false};sales[ ${index} ][ 3 ] = 1;$( '.sales_count' ).innerText = Number( $( '.sales_count' ).innerText ) - 1;shipped_orders.push( sales[ ${index} ][ 2 ] );localStorage.shipped_orders = JSON.stringify( shipped_orders );labelAsShipped( this.parentElement.parentElement.getAttribute( 'data-order_id' ) );">${shipped_instructions}</button></div></div>
                     `;
                     if ( !txinfo[ 3 ] ) {
                         order += `
-                            <div style="display: none; border: 1px solid black; border-radius: 1rem; padding: 1rem; margin-bottom: 1rem;"><div style="font-weight: bold;">Details</div><br>${items}<div style="text-align: right;">Total they owed: $${( total / 100 ).toFixed( 2 )}</div><div style="text-align: right;">Total they paid: $${paid_amount}</div><div style="text-align: right;"><a href="https://mempool.space/${mempoolNetwork}tx/${txinfo[ 0 ]}:${txinfo[ 1 ]}" target="_blank">Inspect transaction</a></div></div>
+                            <div style="display: none; border: 1px solid black; border-radius: 1rem; padding: 1rem; margin-bottom: 1rem;"><div style="font-weight: bold;">Details</div><br>${items}<div style="text-align: right;">Total they owed: ${total} sats</div><div style="text-align: right;">Total they paid: ${paid_amount} sats</div><div style="text-align: right;"><a href="https://mempool.space/${mempoolNetwork}tx/${txinfo[ 0 ]}:${txinfo[ 1 ]}" target="_blank">Inspect transaction</a></div></div>
                         `;
                     } else {
                         order += `
-                            <div style="display: none; border: 1px solid black; border-radius: 1rem; padding: 1rem; margin-bottom: 1rem;"><div style="font-weight: bold;">Details</div><br>${items}<div style="text-align: right;">Total they owed: $${( total / 100 ).toFixed( 2 )}</div><div style="text-align: right;">Total they paid: $${paid_amount}</div><div style="text-align: right;"><a href="${JSON.parse( localStorage.wallet_info )[ "wallet_url" ]}" target="_blank">Inspect transaction</a></div></div>
+                            <div style="display: none; border: 1px solid black; border-radius: 1rem; padding: 1rem; margin-bottom: 1rem;"><div style="font-weight: bold;">Details</div><br>${items}<div style="text-align: right;">Total they owed: ${total} sats</div><div style="text-align: right;">Total they paid: ${paid_amount} sats</div><div style="text-align: right;"><a href="${JSON.parse( localStorage.wallet_info )[ "wallet_url" ]}" target="_blank">Inspect transaction</a></div></div>
                         `;
                     }
                     $( '.orders' ).innerHTML += order;
                     $$( '.delivery_info' )[ $$( '.delivery_info' ).length - 1 ].innerText = delivery_info;
                     var existing_number = $$( '.blank_view .minicart .product_name' ).length;
+                    //Create the itemized list to show when the details button is clicked
                     names_and_prices.forEach( function( item, index ) {
                         //must be -2 the first time and -1 the second time
                         //names_and_prices.length is 2 so I can emulate -2 with - names_and_prices.length - index
                         //then the second time it will be names_and_prices.length - 1 which is -1
                         $$( '.blank_view .minicart .product_name' )[ existing_number - ( names_and_prices.length - index ) ].innerText = item[ 0 ];
-                        $$( '.blank_view .minicart .product_price' )[ existing_number - ( names_and_prices.length - index ) ].innerText = "$" + ( item[ 1 ] / 100 ).toFixed( 2 )
+                        $$( '.blank_view .minicart .product_price' )[ existing_number - ( names_and_prices.length - index ) ].innerText = (item[ 1 ]) + " sats"
                     });
                 });
                 $$( '.withdraw' )[ 0 ].onclick = async () => {
