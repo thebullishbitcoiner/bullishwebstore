@@ -1078,8 +1078,10 @@
                                 <div class="product_name"></div>
                                 <div class="product_price"></div>
                                 <div style="display: none;" class="shipping_zone"></span></div>
-                                <button class="view_product_btn">View product</button>
-                                <button class="add_to_cart" data-num="${i}">Add to cart</button>
+                                <div style="width: 100%">
+                                    <button class="product_details_btn" style="width: 45%">Details</button>
+                                    <button class="add_to_cart" data-num="${i}" style="width: 45%">Add to cart</button>
+                                </div>
                             </div>
                         `;
                         $( '.store_products' ).innerHTML += html;
@@ -1105,7 +1107,7 @@
                                 showToast( "added to cart" );
                             }
                         });
-                        $$( '.view_product_btn' ).forEach( function( item, index ) {
+                        $$( '.product_details_btn' ).forEach( function( item, index ) {
                             item.onclick = (e) => {
                                 var c2 = internal_products[ index ][ "content" ];
                                 var pid = internal_products[ index ][ "id" ];
