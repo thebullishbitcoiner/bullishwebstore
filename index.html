@@ -979,7 +979,7 @@
                         return a.timestamp - b.timestamp;
                     });
                     if ( products.length < expected_products_num ) return;
-                    $( '.products_wrapper' ).innerHTML = `<div class="product"><input placeholder="product name"><input placeholder="image url"><textarea placeholder="description" class="desc"></textarea><select placeholder="shipping zone"><option>--- Shipping zone ---</option><option>Free (digital)</option><option>Worldwide</option><option>Europe</option><option>Australia</option><option>Austria</option><option>Belgium</option><option>Brazil</option><option>Canada</option><option>Denmark</option><option>Finland</option><option>France</option><option>Germany</option><option>Greece</option><option>Hong Kong</option><option>Hungary</option><option>Ireland</option><option>Indonesia</option><option>Israel</option><option>Italy</option><option>Japan</option><option>Kazakhstan</option><option>Korea</option><option>Luxembourg</option><option>Malaysia</option><option>Mexico</option><option>Netherlands</option><option>New Zealand</option><option>Norway</option><option>Poland</option><option>Portugal</option><option>Russia</option><option>Saudi Arabia</option><option>Singapore</option><option>Spain</option><option>Sweden</option><option>Switzerland</option><option>Thailand</option><option>Turkey</option><option>Ukraine</option><option>United Kingdom</option><option>United States</option><option>Vietnam</option><option>China</option></select><input placeholder="sats" class="price" type="number" step="1" min="0"><div style="margin-bottom: 1rem;"><input type="checkbox" style="width: 1rem;vertical-align: middle;margin-bottom: auto;" id="no_price_0"><label for="no_price_0" style="display: inline;vertical-align: middle;">Let users set the price</label></div><button class="preview">Product preview</button><button class="plus_and_minus">Add another product</button></div>`;
+                    $( '.products_wrapper' ).innerHTML = `<div class="product"><input placeholder="product name"><input placeholder="image url"><textarea placeholder="description" class="desc"></textarea><select placeholder="shipping zone"><option>--- Shipping zone ---</option><option>Free (digital)</option><option>Worldwide</option><option>Europe</option><option>Australia</option><option>Austria</option><option>Belgium</option><option>Brazil</option><option>Canada</option><option>Denmark</option><option>Finland</option><option>France</option><option>Germany</option><option>Greece</option><option>Hong Kong</option><option>Hungary</option><option>Ireland</option><option>Indonesia</option><option>Israel</option><option>Italy</option><option>Japan</option><option>Kazakhstan</option><option>Korea</option><option>Luxembourg</option><option>Malaysia</option><option>Mexico</option><option>Netherlands</option><option>New Zealand</option><option>Norway</option><option>Poland</option><option>Portugal</option><option>Russia</option><option>Saudi Arabia</option><option>Singapore</option><option>Spain</option><option>Sweden</option><option>Switzerland</option><option>Thailand</option><option>Turkey</option><option>Ukraine</option><option>United Kingdom</option><option>United States</option><option>Vietnam</option><option>China</option></select><input placeholder="sats" class="price" type="number" step="1" min="0"><div style="margin-bottom: 1rem;"><input type="checkbox" style="width: 1rem;vertical-align: middle;margin-bottom: auto;" id="no_price_0"><label for="no_price_0" style="display: inline;vertical-align: middle;">Let users set the price</label></div><button class="preview" onclick="previewButtonClicked(event)">Product preview</button><button class="plus_and_minus">Add another product</button></div>`;
                     $( '.plus_and_minus' ).onclick = () => {
                         var product = document.createElement( "div" );
                         product.className = "product";
@@ -1038,13 +1038,18 @@
                             }
                         });
                     }
-                    var i; for ( i=0; i<expected_products_num - 1; i++ ) {
+
+                    //This loop will create an empty <div> for each expected product
+                    for (var i=0; i<expected_products_num - 1; i++ ) {
                         $$( '.plus_and_minus' )[ $$( '.plus_and_minus' ).length - 1 ].click();
                     }
+
                     $( '.store_products' ).innerHTML = ``;
                     var internal_products = JSON.parse( JSON.stringify( products ) );
                     internal_products.reverse();
-                    var i; for ( i=0; i<internal_products.length; i++ ) {
+                    
+                    //Loop through all products and add their info to the respective part of the product div
+                    for (var i=0; i<internal_products.length; i++ ) {
                         var product = internal_products[ i ];
                         if ( $_GET[ "privkey" ] ) {
                             var index = expected_products_num - i - 1;
@@ -1053,12 +1058,18 @@
                             $$( '.product' )[ index ].children[ 1 ].value = product.content.image;
                             $$( '.product' )[ index ].children[ 2 ].value = product.content.description;
                             $$( '.product' )[ index ].children[ 3 ].value = product.content.shipping_zone;
-                            if ( product.content.price == "custom" ) {
+                            if ( product.content.price == "custom" ){
                                 $$( '.product' )[ index ].children[ 5 ].children[ 0 ].click();
-                            } else {
+                            }
+                            else {
                                 $$( '.product' )[ index ].children[ 4 ].value = product.content.price;
                             }
-                            if ( i == internal_products.length - 1 ) return; else continue;
+                            if ( i == internal_products.length - 1 ){ 
+                                return;
+                            } 
+                            else {
+                               continue;
+                            }
                         }
 
                         //If not letting the user set the price
@@ -1151,9 +1162,26 @@
                                 });
                             }
                         });
-                    }
+                    }//End for
                 }
             }
+        }
+        function previewButtonClicked(e){
+            var checked = e.target.parentElement.children[ 5 ].children[ 0 ].checked;
+            var price = !checked ? Number( e.target.parentElement.children[ 4 ].value ):`Set an amount<div>$<input type="number" step="1" min="1" style="width: 90%;"></div>`;
+            if ( typeof price == "number" ) price = price + " sats";
+            var html = `
+                <h2>Preview pane</h2>
+                <div class="store_product" style="background-color: lightgrey; border: 1px solid black; border-radius: 1rem; width: 100%; max-width: 13rem; text-align: center; padding: 1rem; word-wrap: break-word;">
+                    <img src="${e.target.parentElement.children[ 1 ].value}" style="border: 1px solid black; width: 100%; max-width: 10rem; margin: auto;">
+                    <div>${e.target.parentElement.children[ 0 ].value}</div>
+                    <div>${price}</div>
+                    <button>View product</button>
+                    <button class="add_to_cart">Add to cart</button>
+                </div>
+            `;
+            $( '.preview_pane' ).innerHTML = html;
+            $( '.preview_pane' ).style.display = "block";
         }
         async function getSignedEvent(event, privateKey) {
             var eventData = JSON.stringify([
