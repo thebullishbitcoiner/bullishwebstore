@@ -1097,16 +1097,21 @@
                         $$( '.store_product .product_image' )[ existing_num ].src = product.content.image;
                         $$( '.store_product .product_name' )[ existing_num ].innerText = product.content.product;
                         if ( price == "custom" ) {
-                            $$( '.store_product .product_price' )[ existing_num ].innerHTML = `Set an amount<div>$<input type="number" step="1" min="21" style="width: 90%;"></div>`;
+                            $$( '.store_product .product_price' )[ existing_num ].innerHTML = `Set an amount<div><input type="number" placeholder="sats" step="1" min="21" style="width: 90%;"></div>`;
                         } else {
                             $$( '.store_product .product_price' )[ existing_num ].innerText = price + " sats";
                         }
                         $$( '.store_product .shipping_zone' )[ existing_num ].innerText = product.content.shipping_zone;
                         $$( '.add_to_cart' ).forEach( function( item ) {
                             item.onclick = (e) => {
-                                // console.log( content.price, e.target.parentElement.getElementsByClassName( "product_price" )[ 0 ].innerText.replace( "$", "" ), ( Number( e.target.parentElement.getElementsByClassName( "product_price" )[ 0 ].innerText.replace( "$", "" ) ) * 100 ) )
-                                $( '.minicart_item_count' ).innerText = Number( $( '.minicart_item_count' ).innerText ) + 1;
-                                price = internal_products[ Number( e.target.getAttribute( "data-num" ) ) ].content.price;
+                                //console.log( content.price, e.target.parentElement.getElementsByClassName( "product_price" )[ 0 ].innerText.replace( "$", "" ), ( Number( e.target.parentElement.getElementsByClassName( "product_price" )[ 0 ].innerText.replace( "$", "" ) ) * 100 ) )
+                                if (internal_products[ Number( e.target.getAttribute( "data-num" ) ) ].content.price == "custom"){
+                                    price = Number( e.target.parentElement.getElementsByClassName( "product_price" )[ 0 ].getElementsByTagName( "input" )[ 0 ].value );
+                                }
+                                else {
+                                    price = internal_products[ Number( e.target.getAttribute( "data-num" ) ) ].content.price;
+                                }
+                                 $( '.minicart_item_count' ).innerText = Number( $( '.minicart_item_count' ).innerText ) + 1;
                                 cart.push({
                                     id: e.target.parentElement.getAttribute( "data-id" ),
                                     item: e.target.parentElement.getElementsByClassName( "product_name" )[ 0 ].innerText,
@@ -1533,7 +1538,7 @@
             message += `<span style="text-decoration: underline;">Stats</span><br>Lifetime purchases: ${store_meta.lifetime_orders.length}<br>Last purchase: ${last_purchase}<br>Last shipment: ${last_shipment}<br>Received this week: ${store_meta.recent_orders.length} ${order_or_orders_2}<br>Shipped this week: ${store_meta.shipment_ids.length} ${order_or_orders}`;
             var now = Math.floor( Date.now() / 1000 );
             if ( 1692047296 - now < 0 && store_meta.checkin_ids.length ) message += `<br>The owner also checked for new orders ${store_meta.checkin_ids.length} ${time_or_times} this week`;
-            var version = "v0.0.10";
+            var version = "v0.0.11";
             message += `<br><br>${version}`;
             return message;
           },
@@ -1700,7 +1705,7 @@
             });
             var total_div = `<div class="minicart" style="display: flex; justify-content: space-between; text-align: left;"><div>Total</div><div>${total} sats</div></div>`;
             var edelivery_div = ``;
-            if ( requires_edelivery ) edelivery_div = `<div>Enter instructions for how to deliver your digital good(s) (e.g. email address? telegram handle? Please leave detailed instructions about what you want us to do)</div><textarea class="edelivery_form" style="width: 100%; height: 5rem;"></textarea>`
+            if ( requires_edelivery ) edelivery_div = `<div>Enter instructions for how to deliver your digital good(s) (e.g. Email address? Nostr npub? Please leave detailed instructions about what you want me to do)</div><textarea class="edelivery_form" style="width: 100%; height: 5rem;"></textarea>`
             var shipping_div = ``;
             if ( requires_shipping ) shipping_div = `<div>Enter what you want on your shipping label (and, if desired, a message for the merchant)</div><textarea class="shipping_label_form" style="width: 100%; height: 5rem;"></textarea>`
             $( '.blank_view' ).innerHTML = `
