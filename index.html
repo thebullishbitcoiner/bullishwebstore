@@ -1145,7 +1145,7 @@
                                 $( '.viewed_product .product_name' ).innerText = c2.product;
                                 $( '.viewed_product .product_image' ).src = c2.image;
                                 if ( c2.price == "custom" ) {
-                                    $( '.viewed_product .product_price' ).innerHTML = `Set an amount<div>$<input type="number" step="1" min="21" style="width: 90%;"></div>`;
+                                    $( '.viewed_product .product_price' ).innerHTML = `Set an amount<div><input type="number" placeholder="sats" step="1" min="21" style="width: 50%;"></div>`;
                                 } else {
                                     $( '.viewed_product .product_price' ).innerText = c2.price + " sats";
                                 }
@@ -1154,11 +1154,18 @@
                                 $( '.blank_view' ).style.display = "block";
                                 $$( '.add_to_cart' ).forEach( function( item ) {
                                     item.onclick = (e) => {
+                                        //Determine if the price is custom or set
+                                        if (c2.price == "custom"){
+                                            c2.price = Number( e.target.parentElement.getElementsByClassName( "product_price" )[ 0 ].getElementsByTagName( "input" )[ 0 ].value );
+                                        }
+                                        else {
+                                            c2.price = Number( e.target.parentElement.getElementsByClassName( "product_price" )[ 0 ].innerText.replace('sats',''));
+                                        }
                                         $( '.minicart_item_count' ).innerText = Number( $( '.minicart_item_count' ).innerText ) + 1;
                                         cart.push({
                                             id: e.target.parentElement.getAttribute( "data-id" ),
                                             item: e.target.parentElement.getElementsByClassName( "product_name" )[ 0 ].innerText,
-                                            price: c2.price != "custom" ? ( Number( e.target.parentElement.getElementsByClassName( "product_price" )[ 0 ].innerText.replace( "$", "" ) ) * 100 ) : Number( e.target.parentElement.getElementsByClassName( "product_price" )[ 0 ].getElementsByTagName( "input" )[ 0 ].value ) * 100,
+                                            price: c2.price,
                                             shipping_zone: e.target.parentElement.getElementsByClassName( "shipping_zone" )[ 0 ].innerText,                                });
                                         $( '.blank_view' ).style.display = "none";
                                         $( '.store_products' ).style.display = "flex";
@@ -1538,7 +1545,7 @@
             message += `<span style="text-decoration: underline;">Stats</span><br>Lifetime purchases: ${store_meta.lifetime_orders.length}<br>Last purchase: ${last_purchase}<br>Last shipment: ${last_shipment}<br>Received this week: ${store_meta.recent_orders.length} ${order_or_orders_2}<br>Shipped this week: ${store_meta.shipment_ids.length} ${order_or_orders}`;
             var now = Math.floor( Date.now() / 1000 );
             if ( 1692047296 - now < 0 && store_meta.checkin_ids.length ) message += `<br>The owner also checked for new orders ${store_meta.checkin_ids.length} ${time_or_times} this week`;
-            var version = "v0.0.11";
+            var version = "v0.0.12";
             message += `<br><br>${version}`;
             return message;
           },
@@ -1701,9 +1708,9 @@
             cart.forEach( function( item ) {
                 if ( item[ "shipping_zone" ] != "Free (digital)" ) requires_shipping = true; else requires_edelivery = true;
                 total = total + item[ "price" ];
-                items += `<div class="minicart" style="display: flex; justify-content: space-between; text-align: left;"><div>${item[ "item" ]}</div><div style="text-align: right;align-self: center;">${item[ "price" ]} sats<span style="border: 1px solid black;border-radius: 50%;width: 1.5rem;height: 1.5rem;display: inline-block;text-align: center; cursor: pointer;" onclick="var child = this.parentElement.parentElement;var parent = child.parentNode;var index = Array.prototype.indexOf.call(parent.children, child);cart.splice( index, 1 );renderCart();$( '.minicart_item_count' ).innerText = Number( $( '.minicart_item_count' ).innerText ) - 1;">&times;</span></div></div>`;
+                items += `<div class="minicart" style="display: flex; justify-content: space-between; text-align: left; border-radius: 5px;"><div>${item[ "item" ]}</div><div style="text-align: right;align-self: center;">${item[ "price" ]} sats<span style="border: 1px solid black; border-radius: 50%; width: 1.5rem; height: 1.5rem; display: inline-block; text-align: center; cursor: pointer; margin-left: 1rem;" onclick="var child = this.parentElement.parentElement;var parent = child.parentNode;var index = Array.prototype.indexOf.call(parent.children, child);cart.splice( index, 1 );renderCart();$( '.minicart_item_count' ).innerText = Number( $( '.minicart_item_count' ).innerText ) - 1;">&times;</span></div></div>`;
             });
-            var total_div = `<div class="minicart" style="display: flex; justify-content: space-between; text-align: left;"><div>Total</div><div>${total} sats</div></div>`;
+            var total_div = `<div class="minicart" style="display: flex; justify-content: space-between; text-align: left; border-radius: 5px;"><div>Total</div><div>${total} sats</div></div>`;
             var edelivery_div = ``;
             if ( requires_edelivery ) edelivery_div = `<div>Enter instructions for how to deliver your digital good(s) (e.g. Email address? Nostr npub? Please leave detailed instructions about what you want me to do)</div><textarea class="edelivery_form" style="width: 100%; height: 5rem;"></textarea>`
             var shipping_div = ``;
