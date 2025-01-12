@@ -1668,7 +1668,7 @@
                 message += `<span style="text-decoration: underline;">Stats</span><br>Lifetime purchases: ${store_meta.lifetime_orders.length}<br>Last purchase: ${last_purchase}<br>Last shipment: ${last_shipment}<br>Received this week: ${store_meta.recent_orders.length} ${order_or_orders_2}<br>Shipped this week: ${store_meta.shipment_ids.length} ${order_or_orders}`;
                 var now = Math.floor(Date.now() / 1000);
                 if (1692047296 - now < 0 && store_meta.checkin_ids.length) message += `<br>The owner also checked for new orders ${store_meta.checkin_ids.length} ${time_or_times} this week`;
-                var version = "v0.0.13";
+                var version = "v0.0.14";
                 message += `<br><br>${version}`;
                 return message;
             },
@@ -1956,18 +1956,34 @@
         }
         $('.view_cart').onclick = renderCart;
 
+        // import { nwc } from "https://esm.sh/@getalby/sdk@3.7.0";
+
+        // const NWC_CONNECTION_SECRET =
+        //     "nostr+walletconnect://69effe7b49a6dd5cf525bd0905917a5005ffe480b58eeb8e861418cf3ae760d9?relay=wss://relay.getalby.com/v1&secret=3c63924cbecbeefe44db7fc8f608074dbfce5c844707a6d37af84ff9ce48a4ea&lud16=bullish@getalby.com";
+
         var getInvoice = async (total, memo) => {
             $('.ln_box').innerHTML = `Loading...(if this doesn't load after 30 seconds, notify the store admin)`;
 
             // Use the new URL for the invoice request
             var satsToPay = $('.sats_to_pay').innerText;
-            var invoice = await fetchInvoiceFromCallback("https://primal.net/lnurlp/thebullishbitcoiner/callback", satsToPay, memo);
+            var invoiceObject = await fetchInvoiceFromCallback("https://getalby.com/lnurlp/bullish/callback", satsToPay, memo);
+            var invoice = invoiceObject.pr;
+            var lnUrlVerify = invoiceObject.verify;
+
+            // const client = new nwc.NWCClient({
+            //     nostrWalletConnectUrl: NWC_CONNECTION_SECRET,
+            // });
+
+            // const transaction = await client.makeInvoice({
+            //     amount: satsToPay * 1000, // Convert to millisatoshis
+            //     description: memo,
+            // });
 
             $('.ln_box').innerHTML = ``;
             $('.ln_box').append(createQR(invoice));
             $('.ln_box').append(invoice);
 
-            await loopTilInvoiceIsPaid(JSON.parse(invoice_data)["payment_hash"]);
+            await loopTilInvoiceIsPaid(lnUrlVerify);
             var buyer_info = {}
             buyer_info["pmthash"] = JSON.parse(invoice_data)["payment_hash"];
             if (sessionStorage.edelivery_form) buyer_info["edelivery_info"] = sessionStorage.edelivery_form;
@@ -2022,7 +2038,7 @@
         async function fetchInvoiceFromCallback(callbackURL, amount, memo, timeout = 5000) {
             const url = new URL(callbackURL);
             const params = {
-                amount: amount,
+                amount: amount * 1000,  //Convert to millisats
                 memo: memo,
             };
             url.search = new URLSearchParams(params).toString();
@@ -2045,7 +2061,7 @@
                 }
 
                 const data = await response.json();
-                return data.pr;
+                return data;
             } catch (error) {
                 // Check if the error is due to a timeout
                 if (error.name === 'AbortError') {
@@ -2064,16 +2080,21 @@
             return status;
         }
 
-        var loopTilInvoiceIsPaid = async (pmthash) => {
-            var status = await checkInvoice(pmthash);
-            if (!status["paid"]) {
+        var loopTilInvoiceIsPaid = async (lnUrlVerify) => {
+            // Make a request to the lnUrlVerify endpoint
+            var response = await fetch(lnUrlVerify);
+            var status = await response.json(); // Assuming the response is in JSON format
+
+            // Check if the invoice is settled
+            if (!status["settled"]) {
                 await waitSomeSeconds(2);
                 console.log("waiting for invoice to be paid...");
-                return loopTilInvoiceIsPaid(pmthash);
+                return loopTilInvoiceIsPaid(lnUrlVerify); // Call the function again
             } else {
-                return true;
+                return true; // Invoice is paid
             }
         }
+
         var labelAsShipped = async (order_id) => {
             var event = {
                 "content": "shipped",
