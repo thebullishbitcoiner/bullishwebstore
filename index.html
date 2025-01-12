@@ -1668,7 +1668,7 @@
                 message += `<span style="text-decoration: underline;">Stats</span><br>Lifetime purchases: ${store_meta.lifetime_orders.length}<br>Last purchase: ${last_purchase}<br>Last shipment: ${last_shipment}<br>Received this week: ${store_meta.recent_orders.length} ${order_or_orders_2}<br>Shipped this week: ${store_meta.shipment_ids.length} ${order_or_orders}`;
                 var now = Math.floor(Date.now() / 1000);
                 if (1692047296 - now < 0 && store_meta.checkin_ids.length) message += `<br>The owner also checked for new orders ${store_meta.checkin_ids.length} ${time_or_times} this week`;
-                var version = "v0.0.14";
+                var version = "v0.0.15";
                 message += `<br><br>${version}`;
                 return message;
             },
@@ -1983,9 +1983,9 @@
             $('.ln_box').append(createQR(invoice));
             $('.ln_box').append(invoice);
 
-            await loopTilInvoiceIsPaid(lnUrlVerify);
+            var preimage = await loopTilInvoiceIsPaid(lnUrlVerify);
             var buyer_info = {}
-            buyer_info["pmthash"] = JSON.parse(invoice_data)["payment_hash"];
+            buyer_info["pmthash"] = preimage;
             if (sessionStorage.edelivery_form) buyer_info["edelivery_info"] = sessionStorage.edelivery_form;
             if (sessionStorage.shipping_label_form) buyer_info["shipping_info"] = sessionStorage.shipping_label_form;
             var message = JSON.stringify([buyer_info, [...cart]]);
@@ -2091,7 +2091,7 @@
                 console.log("waiting for invoice to be paid...");
                 return loopTilInvoiceIsPaid(lnUrlVerify); // Call the function again
             } else {
-                return true; // Invoice is paid
+                return status["preimage"]; // Invoice is paid
             }
         }
 
