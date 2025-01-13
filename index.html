@@ -2065,7 +2065,7 @@
         }
 
         var checkInvoice = async (pmthash) => {
-              // Make a request to the lnUrlVerify endpoint
+            // Make a request to the lnUrlVerify endpoint
             var response = await fetch(lnUrlVerify);
             var status = await response.json(); // Assuming the response is in JSON format
             var status = await getData(`${ln_domain}/api/v1/payments/${pmthash}`, "application/json", ln_readkey);
@@ -2173,7 +2173,7 @@
             $('.make_store').style.display = "none";
         }
         if ($_GET["privkey"]) {
-            var html = `<div class="minicart"><span class="sales_count">0</span> new sales <button class="manage_sales_btn">Manage sales</button></div>`;
+            var html = `<div class="minicart">Orders awaiting shipment: <span class="sales_count">0</span> <button class="manage_sales_btn">Manage sales</button></div>`;
             $('.manage_sales_toolbar').innerHTML = html;
             var manageSales = async () => {
                 $('.splash_screen').style.display = "block";
@@ -2193,19 +2193,15 @@
                             <div style="display: flex; align-items: center; font-weight: bold; font-size: 3rem; margin-right: 0.5rem;">⇦</div>
                             <div style="font-size: 1.5rem; font-weight: bold;">Back</div>
                         </div>
-                        <div style="display: flex; flex-wrap: wrap; justify-content: space-between;"><div style="font-weight: bold;">Wallet</div></div>
-                        <br>
-                `;
-                if (ln_domain && ln_readkey) $('.blank_view').innerHTML += `                
-                        <div class="ln_wallet" style="display: flex;justify-content: space-between;background-color: lightblue;padding: 0.5rem;align-items: center;"><div>Lightning balance: <span class="btc_balance">0</span>&nbsp;sats</div><div><button class="withdraw">Manage</button></div></div><br>
+                    </div>
                 `;
                 //Append the sales header and order div
                 $('.blank_view').innerHTML += `
-                        <div style="font-weight: bold;">Sales</div><br>
+                        <h2>Sales</h2>
                         <div class="orders"></div>
                     </div>
                 `;
-                
+
                 sales.forEach(async function (sale, index) {
                     if ("whisper_key" in sale[0]) {
                         var whisper_key = sale[0]["whisper_key"];
@@ -2329,65 +2325,6 @@
                         $$('.blank_view .minicart .product_price')[existing_number - (names_and_prices.length - index)].innerText = (item[1]) + " sats"
                     });
                 });
-                $$('.withdraw')[0].onclick = async () => {
-                    var some_unshipped_items = false;
-                    sales.forEach(function (sale) {
-                        if (!sale[3]) some_unshipped_items = true;
-                    });
-                    if (some_unshipped_items) {
-                        alert(`You cannot withdraw your money til you ship all your orders.`);
-                        return;
-                    }
-                    var from_amount = 0;
-                    var i; for (i = 0; i < private_keys.length; i++) {
-                        var utxos_in_this_address = await getUTXOs(private_keys[i], mempoolNetwork);
-                        utxos_in_this_address.forEach(function (utxo) {
-                            available_utxos.push(utxo);
-                            from_amount = from_amount + utxo["amount"];
-                        });
-                    }
-                    var destino = prompt("Enter the bitcoin address where you want your sats to go");
-                    if (!destino || !isValidAddress(destino)) {
-                        alert("You entered an invalid bitcoin address. Please try again.");
-                        return;
-                    }
-                    var base_size = 200;
-                    var full_size = base_size + (available_utxos.length * 50);
-                    var fee_options = await getThreeFeeRates(mempoolNetwork);
-                    var sats_per_byte = prompt(`Please enter a fee rate as a number. Specifically, the number of sats per byte you want to pay. The minimum rate is ${fee_options[0]}, the average rate is ${fee_options[1]}, and the urgent rate is ${fee_options[2]}.`);
-                    var sats_per_byte = Number(sats_per_byte);
-                    if (!sats_per_byte) {
-                        alert("You entered an invalid fee rate. You must enter a number greater than 0, such as 5, 10, or 25. Please try again.");
-                        return;
-                    }
-                    var txfee = sats_per_byte * full_size;
-                    if (from_amount - txfee < 294) {
-                        alert(`Unfortunately you do not have enough sats to pay the mining fee necessary to withdraw your money. Your shop only has ${from_amount} sats available and your mining fee would be ${txfee} sats. Try using a lower mining fee rate or make a few more sales to increase the amount of sats you have available to withdraw.`);
-                        return;
-                    }
-                    var txhex = craftTransaction(available_utxos, from_amount - txfee, destino, mempoolNetwork);
-                    var conf = confirm(`Click ok if this is what you want to do:\n\nAmount this shop has: ${from_amount} sats\n\nMining fee for this tx: ${txfee} sats\n\nAmount you will receive: ${from_amount - txfee} sats\n\nAmount this shop will have leftover: 0 sats\n\nDestination address: ${destino}\n\n`);
-                    if (!conf) return;
-                    var txid = await pushBTCpmt(txhex, mempoolNetwork);
-                    if (txid && txid != "error") {
-                        sessionStorage.removeItem("modal_cleared");
-                        var content = `<p>Success! You can <a href="https://mempool.space/${mempoolNetwork}tx/${txid}:0" target="_blank">view your transaction here</a></p>`;
-                        showModal(content, true);
-                        await getNote("modal_cleared");
-                    } else {
-                        sessionStorage.removeItem("modal_cleared");
-                        var content = `<p>Oh no, there was a transaction failure! Try broadcasting your raw transaction <a href="https://mempool.space/${mempoolNetwork}tx/push" target="_blank">here</a></p><p>${txhex}</p>`;
-                        showModal(content, true);
-                        await getNote("modal_cleared");
-                        // alert( `Oh no, there was a transaction failure! Try broadcasting your raw transaction here: https://mempool.space/${mempoolNetwork}tx/push\n\n${txhex}` );
-                    }
-                    console.log("raw tx:", txhex);
-                    await waitSomeSeconds(2);
-                    $('.manage_sales_btn').click();
-                }
-                if ($$('.withdraw')[1]) $$('.withdraw')[1].onclick = async () => {
-                    window.open(JSON.parse(localStorage["wallet_info"])["wallet_url"], '_blank');
-                }
             }
             $('.manage_sales_btn').onclick = manageSales;
         }
