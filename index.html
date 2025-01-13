@@ -688,7 +688,7 @@
         function showModal(content, block_til_clear) {
             if (block_til_clear) var fn = `modalVanish();sessionStorage[ 'modal_cleared' ] = true;`; else var fn = `modalVanish();`;
             $(".modal").innerHTML = `<div style="position: absolute;right: 1rem;top: 0.5rem;font-size: 2rem; cursor: pointer;" onclick="${fn}">&times;</div>`;
-            $(".modal").innerHTML += `<div style="overflow-y: scroll; max-height: 80vh; margin-top: 1.5rem;">${content}</div>`;
+            $(".modal").innerHTML += `<div style="overflow-y: scroll; max-height: 80vh;">${content}</div>`;
             $(".black-bg").style.display = "block";
             $(".modal").style.display = "block";
         }
@@ -1948,7 +1948,7 @@
                     });
                     cart = [];
                     if ($('.minicart_item_count')) $('.minicart_item_count').innerText = 0;
-                    var content = `<p>Thank you for your business. Here is your receipt:</p><p style="font-weight: bold;">Items purchased</p>${receipt_items}<p>Total: ${total} sats</p><p>Proof of payment: ${whisper_data["whisper_key"]}</p><p>Keep this on you til you recieve your item. If the seller does not send you your item, contact them and show them your proof of payment.</p>`;
+                    var content = `<p>Thank you for your business. Here is your receipt:</p><p style="font-weight: bold;">Items purchased</p>${receipt_items}<p>Total: ${total} sats</p><p>Proof of payment: ${whisper_data["whisper_key"]}</p><p>Take a screenshot and keep it for your records.</p>`;
                     showModal(content, true);
                     await getNote("modal_cleared");
                 }
