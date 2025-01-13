@@ -459,16 +459,30 @@
         }
 
         async function getBitcoinPrice() {
-            var prices = [];
-            var cbprice = await getBitcoinPriceFromCoinbase();
-            var kprice = await getBitcoinPriceFromKraken();
-            var cdprice = await getBitcoinPriceFromCoindesk();
-            var gprice = await getBitcoinPriceFromGemini();
-            var cgprice = await getBitcoinPriceFromCoinGecko();
-            prices.push(Number(cbprice), Number(kprice), Number(cdprice), Number(gprice), Number(cgprice));
-            prices.sort();
+            var prices = {};
+            var exchanges = ['Coinbase', 'Kraken', 'Coindesk', 'Gemini', 'CoinGecko'];
+            var pricePromises = [
+                getBitcoinPriceFromCoinbase(),
+                getBitcoinPriceFromKraken(),
+                getBitcoinPriceFromCoindesk(),
+                getBitcoinPriceFromGemini(),
+                getBitcoinPriceFromCoinGecko()
+            ];
+
+            // Wait for all price promises to resolve
+            var results = await Promise.all(pricePromises);
+
+            // Store prices in an associative array (object)
+            exchanges.forEach((exchange, index) => {
+                prices[exchange] = Number(results[index]);
+            });
+
+            // Log the associative array of prices
             console.log(prices);
-            return prices[2];
+
+            // Sort prices and return the median price
+            var sortedPrices = Object.values(prices).sort((a, b) => a - b);
+            return sortedPrices[2];
         }
 
         function dollarsToSats(dollars) {
@@ -1658,7 +1672,7 @@
                 message += `<span style="text-decoration: underline;">Stats</span><br>Lifetime purchases: ${store_meta.lifetime_orders.length}<br>Last purchase: ${last_purchase}<br>Last shipment: ${last_shipment}<br>Received this week: ${store_meta.recent_orders.length} ${order_or_orders_2}<br>Shipped this week: ${store_meta.shipment_ids.length} ${order_or_orders}`;
                 var now = Math.floor(Date.now() / 1000);
                 if (1692047296 - now < 0 && store_meta.checkin_ids.length) message += `<br>The owner also checked for new orders ${store_meta.checkin_ids.length} ${time_or_times} this week`;
-                var version = "v0.0.16";
+                var version = "v0.0.17";
                 message += `<br><br>${version}`;
                 return message;
             },
